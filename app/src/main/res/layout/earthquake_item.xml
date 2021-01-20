@@ -10,6 +10,7 @@
         android:id="@+id/mag_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1"
         tools:text="8.0" />
 
@@ -17,15 +18,34 @@
         android:id="@+id/place_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="3"
         tools:text="Wenchuan Sichuan" />
 
-    <TextView
-        android:id="@+id/time_text"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:gravity="right"
-        tools:text="May 12, 2008" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/date_text"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            tools:text="May 12, 2008" />
+
+        <TextView
+            android:id="@+id/time_text"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textAllCaps="true"
+            tools:text="3:00 PM" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

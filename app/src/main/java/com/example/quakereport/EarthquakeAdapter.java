@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
@@ -21,33 +23,63 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        // 检查是否已经有可以重用的列表项视图（称为 convertView），
+        // 否则，如果 convertView 为 null，则 inflate 一个新列表项布局。
         View itemView = convertView;
-        Earthquake earthquake;
-        ViewHolder holder;
-
-        if (null == itemView) {
-            itemView = LayoutInflater.from(getContext()).inflate(R.layout.earthquake_item, null);
-            holder = new ViewHolder();
-            holder.tvMag = itemView.findViewById(R.id.mag_text);
-            holder.tvPlace = itemView.findViewById(R.id.place_text);
-            holder.tvTime = itemView.findViewById(R.id.time_text);
-            itemView.setTag(holder);
-        } else {
-            holder = (ViewHolder) itemView.getTag();
+        if (itemView == null) {
+            itemView = LayoutInflater.from(getContext()).inflate(
+                    R.layout.earthquake_item, parent, false);
         }
 
-        earthquake = getItem(position);
+        // 在地震列表中的给定位置找到地震
+        Earthquake currentEarthquake = getItem(position);
 
-        holder.tvMag.setText(earthquake.getMag());
-        holder.tvPlace.setText(earthquake.getPlace());
-        holder.tvTime.setText(earthquake.getTime());
+        // 找到视图 ID 为 magnitude 的 TextView
+        TextView magnitudeView = (TextView) itemView.findViewById(R.id.mag_text);
+        // 在该 TextView 中显示目前地震的震级
+        magnitudeView.setText(currentEarthquake.getMag());
 
+        // 找到视图 ID 为 location 的 TextView
+        TextView locationView = (TextView) itemView.findViewById(R.id.place_text);
+        // 在该 TextView 中显示目前地震的位置
+        locationView.setText(currentEarthquake.getPlace());
+
+        // 根据地震时间（以毫秒为单位）创建一个新的 Date 对象
+        Date dateObject = new Date(currentEarthquake.getTimeInMilliseconds());
+
+        // 找到视图 ID 为 date 的 TextView
+        TextView dateView = (TextView) itemView.findViewById(R.id.date_text);
+        // 设置日期字符串的格式（即 "Mar 3, 1984"）
+        String formattedDate = formatDate(dateObject);
+        // 在该 TextView 中显示目前地震的日期
+        dateView.setText(formattedDate);
+
+        // 找到视图 ID 为 time 的 TextView
+        TextView timeView = (TextView) itemView.findViewById(R.id.time_text);
+        // 设置时间字符串的格式（即 "4:30PM"）
+        String formattedTime = formatTime(dateObject);
+        // 在该 TextView 中显示目前地震的时间
+        timeView.setText(formattedTime);
+
+        // 返回目前显示适当数据的列表项视图
         return itemView;
     }
 
-    private static class ViewHolder {
-        private TextView tvMag;
-        private TextView tvPlace;
-        private TextView tvTime;
+    /**
+     * 从 Date 对象返回格式化的日期字符串（即 "Mar 3, 1984"）。
+     */
+    private String formatDate(Date dateObject) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy");
+        return dateFormat.format(dateObject);
     }
+
+    /**
+     * 从 Date 对象返回格式化的时间字符串（即 "4:30 PM"）。
+     */
+    private String formatTime(Date dateObject) {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        return timeFormat.format(dateObject);
+    }
+
+
 }
