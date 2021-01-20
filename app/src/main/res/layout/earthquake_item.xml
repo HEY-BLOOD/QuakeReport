@@ -15,12 +15,20 @@
         tools:text="8.0" />
 
     <TextView
-        android:id="@+id/place_text"
+        android:id="@+id/place_offset_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_weight="3"
-        tools:text="Wenchuan Sichuan" />
+        android:layout_weight="2"
+        tools:text="30km S of" />
+
+    <TextView
+        android:id="@+id/primary_place_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="2"
+        tools:text="San Francisco, CA" />
 
     <LinearLayout
         android:layout_width="0dp"

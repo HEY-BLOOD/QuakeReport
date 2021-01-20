@@ -16,6 +16,8 @@ import java.util.List;
 
 public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
+    private static final String LOCATION_SEPARATOR = " of ";
+
     public EarthquakeAdapter(@NonNull Context context, @NonNull List<Earthquake> objects) {
         super(context, 0, objects);
     }
@@ -39,10 +41,24 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // 在该 TextView 中显示目前地震的震级
         magnitudeView.setText(currentEarthquake.getMag());
 
-        // 找到视图 ID 为 location 的 TextView
-        TextView locationView = (TextView) itemView.findViewById(R.id.place_text);
+        // 位置信息的拆分
+        String primaryPlace;
+        String placeOffset;
+        String originalPlace = currentEarthquake.getPlace();
+        if (originalPlace.contains(LOCATION_SEPARATOR)) {
+            String[] parts = originalPlace.split(LOCATION_SEPARATOR);
+            placeOffset = parts[0] + LOCATION_SEPARATOR;
+            primaryPlace = parts[1];
+        } else {
+            placeOffset = getContext().getString(R.string.near_the);
+            primaryPlace = originalPlace;
+        }
+        // 找到 place 位置信息 的两个 TextView
+        TextView placeOffsetView = (TextView) itemView.findViewById(R.id.place_offset_text);
+        TextView primaryPlaceView = (TextView) itemView.findViewById(R.id.primary_place_text);
         // 在该 TextView 中显示目前地震的位置
-        locationView.setText(currentEarthquake.getPlace());
+        placeOffsetView.setText(placeOffset);
+        primaryPlaceView.setText(primaryPlace);
 
         // 根据地震时间（以毫秒为单位）创建一个新的 Date 对象
         Date dateObject = new Date(currentEarthquake.getTimeInMilliseconds());
