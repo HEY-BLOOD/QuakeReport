@@ -1,15 +1,16 @@
 package com.example.quakereport;
 
 public class Earthquake {
-    private String mag;
+    /** 地震震级 */
+    private double mag;
+
+    /** 地震位置（完整位置） */
     private String place;
 
-    /**
-     * Time of the earthquake
-     */
+    /** Time of the earthquake */
     private long timeInMilliseconds;
 
-    public String getMag() {
+    public double getMag() {
         return mag;
     }
 
@@ -31,7 +32,7 @@ public class Earthquake {
      * @param place 表示地震的城市位置
      * @param timeInMilliseconds  表示地震发生时以毫秒（根据 Epoch）计的时间
      */
-    public Earthquake(String mag, String place, long timeInMilliseconds) {
+    public Earthquake(double mag, String place, long timeInMilliseconds) {
         this.mag = mag;
         this.place = place;
         this.timeInMilliseconds = timeInMilliseconds;

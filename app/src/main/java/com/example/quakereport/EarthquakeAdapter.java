@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -36,10 +37,12 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // 在地震列表中的给定位置找到地震
         Earthquake currentEarthquake = getItem(position);
 
-        // 找到视图 ID 为 magnitude 的 TextView
+        // 使用视图 ID magnitude 找到 TextView
         TextView magnitudeView = (TextView) itemView.findViewById(R.id.mag_text);
+        // 格式化震级使其显示一位小数
+        String formattedMagnitude = formatMagnitude(currentEarthquake.getMag());
         // 在该 TextView 中显示目前地震的震级
-        magnitudeView.setText(currentEarthquake.getMag());
+        magnitudeView.setText(formattedMagnitude);
 
         // 位置信息的拆分
         String primaryPlace;
@@ -95,6 +98,15 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
     private String formatTime(Date dateObject) {
         SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
         return timeFormat.format(dateObject);
+    }
+
+    /**
+     * 从十进制震级值返回格式化后的仅显示一位小数的震级字符串
+     * （如“3.2”）。
+     */
+    private String formatMagnitude(double magnitude) {
+        DecimalFormat magnitudeFormat = new DecimalFormat("0.0");
+        return magnitudeFormat.format(magnitude);
     }
 
 
