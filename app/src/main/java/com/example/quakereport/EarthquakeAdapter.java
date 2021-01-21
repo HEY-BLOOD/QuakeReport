@@ -1,6 +1,7 @@
 package com.example.quakereport;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -43,6 +45,14 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         String formattedMagnitude = formatMagnitude(currentEarthquake.getMag());
         // 在该 TextView 中显示目前地震的震级
         magnitudeView.setText(formattedMagnitude);
+
+        // 为震级圆圈设置正确的背景颜色。
+        // 从 TextView 获取背景，该背景是一个 GradientDrawable。
+        GradientDrawable magnitudeCircle = (GradientDrawable) magnitudeView.getBackground();
+        // 根据当前的地震震级获取相应的背景颜色
+        int magnitudeColor = getMagnitudeColor(currentEarthquake.getMag());
+        // 设置震级圆圈的颜色
+        magnitudeCircle.setColor(magnitudeColor);
 
         // 位置信息的拆分
         String primaryPlace;
@@ -107,6 +117,50 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
     private String formatMagnitude(double magnitude) {
         DecimalFormat magnitudeFormat = new DecimalFormat("0.0");
         return magnitudeFormat.format(magnitude);
+    }
+
+    /**
+     * 根据 震级的级别 返回不同的 震级圆圈颜色
+     */
+    private int getMagnitudeColor(double magnitude) {
+        int magnitudeColorResourceId;
+        // 返回颜色整数 值。对于正 小数，可以将其看作截去小数点后的 数字部分。
+        int magnitudeFloor = (int) Math.floor(magnitude);
+        switch (magnitudeFloor) {
+            case 0:
+            case 1:
+                magnitudeColorResourceId = R.color.magnitude1;
+                break;
+            case 2:
+                magnitudeColorResourceId = R.color.magnitude2;
+                break;
+            case 3:
+                magnitudeColorResourceId = R.color.magnitude3;
+                break;
+            case 4:
+                magnitudeColorResourceId = R.color.magnitude4;
+                break;
+            case 5:
+                magnitudeColorResourceId = R.color.magnitude5;
+                break;
+            case 6:
+                magnitudeColorResourceId = R.color.magnitude6;
+                break;
+            case 7:
+                magnitudeColorResourceId = R.color.magnitude7;
+                break;
+            case 8:
+                magnitudeColorResourceId = R.color.magnitude8;
+                break;
+            case 9:
+                magnitudeColorResourceId = R.color.magnitude9;
+                break;
+            default:
+                magnitudeColorResourceId = R.color.magnitude10plus;
+                break;
+        }
+        // 将颜色资源 ID 转换为 实际整数颜色值，并将结果作为 返回值。
+        return ContextCompat.getColor(getContext(), magnitudeColorResourceId);
     }
 
 
