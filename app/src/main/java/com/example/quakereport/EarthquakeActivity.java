@@ -15,7 +15,11 @@
  */
 package com.example.quakereport;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -39,10 +43,27 @@ public class EarthquakeActivity extends AppCompatActivity {
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
         // Create a new {@link ArrayAdapter} of earthquakes
-        EarthquakeAdapter adapter = new EarthquakeAdapter(this, earthquakes);
+        final EarthquakeAdapter adapter = new EarthquakeAdapter(this, earthquakes);
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
         earthquakeListView.setAdapter(adapter);
+
+        earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                // 查找单击的当前地震
+                Earthquake currentEarthquake = adapter.getItem(position);
+
+                // 将字符串 URL 转换为 URI 对象（以传递至 Intent 中 constructor)
+                Uri earthquakeUri = Uri.parse(currentEarthquake.getUrl());
+
+                // 创建一个新的 Intent 以查看地震 URI
+                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, earthquakeUri);
+
+                // 发送 Intent 以启动新活动
+                startActivity(websiteIntent);
+            }
+        });
     }
 }

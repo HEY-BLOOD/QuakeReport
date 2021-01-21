@@ -66,7 +66,12 @@ public final class QueryUtils {
                 // Extract the value for the key called "time"
                 long earthquakeTime = properties.getLong("time");
 
-                Earthquake earthquake = new Earthquake(earthquakeMag, earthquakePlace, earthquakeTime);
+                // 提取名为 "url" 的键的值
+                String earthquakeUrl = properties.getString("url");
+
+                // 使用震级、地点、时间和来自 JSON 响应的 url，
+                // 创建一个新的 {@link Earthquake} 对象。
+                Earthquake earthquake = new Earthquake(earthquakeMag, earthquakePlace, earthquakeTime, earthquakeUrl);
 
                 earthquakes.add(earthquake);
             }
