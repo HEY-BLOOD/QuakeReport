@@ -26,12 +26,6 @@ import java.util.List;
 public final class QueryUtils {
 
     /**
-     * URL for earthquake data from the USGS dataset
-     */
-    private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
-
-    /**
      * Tag for the log messages
      */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
