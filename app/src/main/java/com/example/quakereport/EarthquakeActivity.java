@@ -17,13 +17,11 @@ package com.example.quakereport;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,6 +56,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(LOG_TAG, "TEST: onCreate() called ...");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
@@ -96,18 +96,23 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         // 初始化 loader。传递上面定义的整数 ID 常量并作为捆绑
         // 传递 null。为 LoaderCallbacks 参数（由于
         // 此活动实现了 LoaderCallbacks 接口而有效）传递此活动。
+        Log.i(LOG_TAG, "TEST: loaderManager.initLoader() called ...");
         loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
     }
 
     @NonNull
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int id, @Nullable Bundle args) {
+        Log.i(LOG_TAG, "TEST: onCreateLoader() called ...");
+
         // 为给定 URL 创建新 loader
         return new EarthquakeLoader(this, USGS_REQUEST_URL);
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+        Log.i(LOG_TAG, "TEST: onLoadFinished() called ...");
+
         // 清除之前地震数据的适配器
         earthquakeAdapter.clear();
 
@@ -120,8 +125,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoaderReset(@NonNull Loader<List<Earthquake>> loader) {
+        Log.i(LOG_TAG, "TEST: onLoaderReset() called ...");
+
         // 重置 Loader，以便能够清除现有数据。
         earthquakeAdapter.clear();
     }
-    
+
 }

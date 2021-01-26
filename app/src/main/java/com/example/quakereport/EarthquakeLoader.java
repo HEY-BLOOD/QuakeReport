@@ -1,6 +1,7 @@
 package com.example.quakereport;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.loader.content.AsyncTaskLoader;
 
@@ -35,6 +36,9 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
 
     @Override
     protected void onStartLoading() {
+        Log.i(LOG_TAG, "TEST: onStartLoading() called ...");
+
+        // Loader 初始化完成后，立即强制启动
         forceLoad();
     }
 
@@ -43,6 +47,8 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
      */
     @Override
     public List<Earthquake> loadInBackground() {
+        Log.i(LOG_TAG, "TEST: loadInBackground() called ...");
+
         if (null == url) {
             return null;
         }

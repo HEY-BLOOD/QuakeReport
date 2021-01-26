@@ -11,13 +11,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -184,6 +181,8 @@ public final class QueryUtils {
      * 查询 USGS 数据集并返回 {@link Earthquake} 对象的列表。
      */
     public static List<Earthquake> fetchEarthquakeData(String requestUrl) {
+        Log.i(LOG_TAG, "TEST: fetchEarthquakeData() called ...");
+
         // 创建 URL 对象
         URL url = createUrl(requestUrl);
 
