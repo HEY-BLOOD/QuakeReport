@@ -19,17 +19,31 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Earthquake>> {
+    /**
+     * 地震 loader ID 的常量值。可选择任意整数。
+     * 仅当使用多个 loader 时该设置才起作用。
+     */
+    public static int EARTHQUAKE_LOADER_ID = 1;
 
+    /**
+     * 日志标签
+     */
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
     /**
@@ -76,59 +90,38 @@ public class EarthquakeActivity extends AppCompatActivity {
             }
         });
 
-        // 启动 AsyncTask 以获取地震数据
-        EarthquakeAsyncTask task = new EarthquakeAsyncTask();
-        task.execute(USGS_REQUEST_URL);
+        // 引用 LoaderManager，以便与 loader 进行交互。
+        LoaderManager loaderManager = getSupportLoaderManager();
+
+        // 初始化 loader。传递上面定义的整数 ID 常量并作为捆绑
+        // 传递 null。为 LoaderCallbacks 参数（由于
+        // 此活动实现了 LoaderCallbacks 接口而有效）传递此活动。
+        loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
     }
 
-    /**
-     * {@link AsyncTask} 用于在后台线程上执行网络请求，然后
-     * 使用响应中的地震列表更新 UI。
-     * <p>
-     * AsyncTask 有三个泛型参数：输入类型、用于进度更新的类型和
-     * 输出类型。我们的任务将获取字符串 URL 并返回地震。我们不会执行
-     * 进度更新，因此第二个泛型是无效的。
-     * <p>
-     * 我们将仅覆盖 AsyncTask 的两个方法：doInBackground() 和 onPostExecute()。
-     * doInBackground() 方法会在后台线程上运行，因此可以运行长时间运行的代码
-     * （如网络活动），而不会干扰应用的响应性。
-     * onPostExecute() 在 UI 线程上运行，系统会将 doInBackground() 方法的结果传递给它，
-     * 因此该方法可使用生成的数据更新 UI。
-     */
-    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>> {
-        /**
-         * 此方法在后台线程上运行并执行网络请求。
-         * 我们不能够通过后台线程更新 UI，因此我们返回
-         * {@link Earthquake} 的列表作为结果。
-         */
-        @Override
-        protected List<Earthquake> doInBackground(String... urls) {
-            // 如果不存在任何 URL 或第一个 URL 为空，切勿执行请求。
-            if (urls.length < 1 || urls[0] == null) {
-                return null;
-            }
+    @NonNull
+    @Override
+    public Loader<List<Earthquake>> onCreateLoader(int id, @Nullable Bundle args) {
+        // 为给定 URL 创建新 loader
+        return new EarthquakeLoader(this, USGS_REQUEST_URL);
+    }
 
-            List<Earthquake> earthquakes = QueryUtils.fetchEarthquakeData(urls[0]);
-            return earthquakes;
-        }
+    @Override
+    public void onLoadFinished(@NonNull Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+        // 清除之前地震数据的适配器
+        earthquakeAdapter.clear();
 
-        /**
-         * 后台工作完成后，此方法会在主 UI 线程上
-         * 运行。此方法接收 doInBackground() 方法的返回值
-         * 作为输入。首先，我们将清理适配器，除去先前 USGS 查询的地震
-         * 数据。然后，我们使用新地震列表更新适配器，
-         * 这将触发 ListView 重新填充其列表项。
-         */
-        @Override
-        protected void onPostExecute(List<Earthquake> earthquakes) {
-            // 清除之前地震数据的适配器
-            earthquakeAdapter.clear();
-
-            // 如果存在 {@link Earthquake} 的有效列表，则将其添加到适配器的
-            // 数据集。这将触发 ListView 执行更新。
-            if (!earthquakes.isEmpty() && null != earthquakes) {
-                earthquakeAdapter.addAll(earthquakes);
-            }
+        // 如果存在 {@link Earthquake} 的有效列表，则将其添加到适配器的
+        // 数据集。这将触发 ListView 执行更新。
+        if (!earthquakes.isEmpty() && earthquakes != null) {
+            earthquakeAdapter.addAll(earthquakes);
         }
     }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<List<Earthquake>> loader) {
+        // 重置 Loader，以便能够清除现有数据。
+        earthquakeAdapter.clear();
+    }
+    
 }
