@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -49,7 +50,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
      * URL for earthquake data from the USGS dataset
      */
     private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=0";
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=15";
 
     /**
      * 地震列表的适配器
@@ -126,6 +127,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
         // Set empty state text to display "No earthquakes found."
         emptyView.setText(R.string.no_earthquakes);
+
+        // 因数据已加载，隐藏加载指示符
+        ProgressBar progressBar = findViewById(R.id.loading_spinner);
+        progressBar.setVisibility(View.GONE);
 
         // 清除之前地震数据的适配器
         earthquakeAdapter.clear();
