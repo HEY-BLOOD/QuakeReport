@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,11 +49,17 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
      * URL for earthquake data from the USGS dataset
      */
     private static final String USGS_REQUEST_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=20";
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=0";
+
     /**
      * 地震列表的适配器
      */
     private EarthquakeAdapter earthquakeAdapter;
+
+    /**
+     * 列表为空时显示的 空视图
+     */
+    private TextView emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,10 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
         // 在布局中查找 {@link ListView} 的引用
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
+
+        // 为 ListView 绑定空视图，在无数据时显示
+        emptyView = (TextView) findViewById(R.id.empty_view);
+        earthquakeListView.setEmptyView(emptyView);
 
         // 创建新适配器，将空地震列表作为输入
         earthquakeAdapter = new EarthquakeAdapter(this, new ArrayList<Earthquake>());
@@ -112,6 +123,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoadFinished(@NonNull Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
         Log.i(LOG_TAG, "TEST: onLoadFinished() called ...");
+
+        // Set empty state text to display "No earthquakes found."
+        emptyView.setText(R.string.no_earthquakes);
 
         // 清除之前地震数据的适配器
         earthquakeAdapter.clear();
