@@ -111,7 +111,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         });
 
         // If there is a network connection, fetch data
-        if (checkNetworkConnection()) {    // 引用 LoaderManager，以便与 loader 进行交互。
+        if (checkNetworkConnection()) {
+            // 引用 LoaderManager，以便与 loader 进行交互。
             LoaderManager loaderManager = getSupportLoaderManager();
 
             // 初始化 loader。传递上面定义的整数 ID 常量并作为捆绑
