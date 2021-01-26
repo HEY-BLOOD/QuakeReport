@@ -15,7 +15,10 @@
  */
 package com.example.quakereport;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,12 +42,12 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
      * 地震 loader ID 的常量值。可选择任意整数。
      * 仅当使用多个 loader 时该设置才起作用。
      */
-    public static int EARTHQUAKE_LOADER_ID = 1;
+    private static int EARTHQUAKE_LOADER_ID = 1;
 
     /**
      * 日志标签
      */
-    public static final String LOG_TAG = EarthquakeActivity.class.getName();
+    private static final String LOG_TAG = EarthquakeActivity.class.getName();
 
     /**
      * URL for earthquake data from the USGS dataset
@@ -62,6 +65,11 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
      */
     private TextView emptyView;
 
+    /**
+     * 加载指示符
+     */
+    private ProgressBar loadSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(LOG_TAG, "TEST: onCreate() called ...");
@@ -72,8 +80,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         // 在布局中查找 {@link ListView} 的引用
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
-        // 为 ListView 绑定空视图，在无数据时显示
-        emptyView = (TextView) findViewById(R.id.empty_view);
+        // 为 ListView 绑定空视图，在无数据时自动显示
+        emptyView = findViewById(R.id.empty_view);
         earthquakeListView.setEmptyView(emptyView);
 
         // 创建新适配器，将空地震列表作为输入
@@ -102,14 +110,20 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
             }
         });
 
-        // 引用 LoaderManager，以便与 loader 进行交互。
-        LoaderManager loaderManager = getSupportLoaderManager();
+        // If there is a network connection, fetch data
+        if (checkNetworkConnection()) {
+            // 引用 LoaderManager，以便与 loader 进行交互。
+            LoaderManager loaderManager = getSupportLoaderManager();
 
-        // 初始化 loader。传递上面定义的整数 ID 常量并作为捆绑
-        // 传递 null。为 LoaderCallbacks 参数（由于
-        // 此活动实现了 LoaderCallbacks 接口而有效）传递此活动。
-        Log.i(LOG_TAG, "TEST: loaderManager.initLoader() called ...");
-        loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+            // 初始化 loader。传递上面定义的整数 ID 常量并作为捆绑
+            // 传递 null。为 LoaderCallbacks 参数（由于
+            // 此活动实现了 LoaderCallbacks 接口而有效）传递此活动。
+            loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        } else {
+            loadSpinner = findViewById(R.id.loading_spinner);
+            loadSpinner.setVisibility(View.GONE);
+            emptyView.setText(R.string.no_internet_connection);
+        }
     }
 
     @NonNull
@@ -129,15 +143,15 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         emptyView.setText(R.string.no_earthquakes);
 
         // 因数据已加载，隐藏加载指示符
-        ProgressBar progressBar = findViewById(R.id.loading_spinner);
-        progressBar.setVisibility(View.GONE);
+        loadSpinner = findViewById(R.id.loading_spinner);
+        loadSpinner.setVisibility(View.GONE);
 
         // 清除之前地震数据的适配器
         earthquakeAdapter.clear();
 
         // 如果存在 {@link Earthquake} 的有效列表，则将其添加到适配器的
         // 数据集。这将触发 ListView 执行更新。
-        if (!earthquakes.isEmpty() && earthquakes != null) {
+        if (earthquakes != null && !earthquakes.isEmpty()) {
             earthquakeAdapter.addAll(earthquakes);
         }
     }
@@ -148,6 +162,22 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 
         // 重置 Loader，以便能够清除现有数据。
         earthquakeAdapter.clear();
+    }
+
+    /**
+     * Check for connectivity status
+     *
+     * @return Network connection status
+     */
+    private boolean checkNetworkConnection() {
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        // Get details on the currently active default data network
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        // Check for connectivity status
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
 }
