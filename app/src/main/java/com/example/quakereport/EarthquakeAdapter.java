@@ -42,7 +42,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // 使用视图 ID magnitude 找到 TextView
         TextView magnitudeView = (TextView) itemView.findViewById(R.id.mag_text);
         // 格式化震级使其显示一位小数
-        String formattedMagnitude = formatMagnitude(currentEarthquake.getMag());
+        String formattedMagnitude = formatMagnitude(currentEarthquake.getMagnitude());
         // 在该 TextView 中显示目前地震的震级
         magnitudeView.setText(formattedMagnitude);
 
@@ -50,7 +50,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // 从 TextView 获取背景，该背景是一个 GradientDrawable。
         GradientDrawable magnitudeCircle = (GradientDrawable) magnitudeView.getBackground();
         // 根据当前的地震震级获取相应的背景颜色
-        int magnitudeColor = getMagnitudeColor(currentEarthquake.getMag());
+        int magnitudeColor = getMagnitudeColor(currentEarthquake.getMagnitude());
         // 设置震级圆圈的颜色
         magnitudeCircle.setColor(magnitudeColor);
 
