@@ -4,7 +4,7 @@ public class Earthquake {
     /**
      * 地震震级
      */
-    private double mag;
+    private double magnitude;
 
     /**
      * 地震位置（完整位置）
@@ -21,8 +21,8 @@ public class Earthquake {
      */
     private String url;
 
-    public double getMag() {
-        return mag;
+    public double getMagnitude() {
+        return magnitude;
     }
 
     public String getPlace() {
@@ -46,13 +46,13 @@ public class Earthquake {
     /**
      * 构造一个新的 {@link Earthquake} 对象。
      *
-     * @param mag                表示地震的震级（大小）
+     * @param magnitude          表示地震的震级（大小）
      * @param place              表示地震的城市位置
      * @param timeInMilliseconds 表示地震发生时以毫秒（根据 Epoch）计的时间
      * @param url                表示用于查找关于地震的更多详细信息的网站 URL
      */
-    public Earthquake(double mag, String place, long timeInMilliseconds, String url) {
-        this.mag = mag;
+    public Earthquake(double magnitude, String place, long timeInMilliseconds, String url) {
+        this.magnitude = magnitude;
         this.place = place;
         this.timeInMilliseconds = timeInMilliseconds;
         this.url = url;
