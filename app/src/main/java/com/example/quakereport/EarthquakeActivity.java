@@ -150,16 +150,26 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int id, @Nullable Bundle args) {
         Log.i(LOG_TAG, "TEST: onCreateLoader() called ...");
+
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String minMagnitude = sharedPrefs.getString(getString(R.string.settings_min_magnitude_key),
+
+        // 地震最小震级的偏好设置
+        String minMagnitude = sharedPrefs.getString(getString(
+                R.string.settings_min_magnitude_key),
                 getString(R.string.settings_min_magnitude_default));
         Uri baseUri = Uri.parse(USGS_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
+        // 按照地震发生的最近时间排序偏好
+        String orderBy = sharedPrefs.getString(getString(
+                R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default));
+
+        // 构造 USGS 请求地址
         uriBuilder.appendQueryParameter("format", "geojson");
         uriBuilder.appendQueryParameter("limit", "10");
         uriBuilder.appendQueryParameter("minmag", minMagnitude);
-        uriBuilder.appendQueryParameter("orderby", "time");
+        uriBuilder.appendQueryParameter("orderby", orderBy);
 
         return new EarthquakeLoader(this, uriBuilder.toString());
     }
