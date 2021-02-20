@@ -38,6 +38,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import com.example.quakereport.web.WebActivity;
+import com.example.quakereport.web.WebIntentContract;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,11 +108,13 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
                 // 将字符串 URL 转换成 URI 对象（传递到 Intent 构造函数中）
                 Uri earthquakeUri = Uri.parse(currentEarthquake.getUrl());
 
-                // 创建新 intent 以查看地震 URI
-                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, earthquakeUri);
+                // 创建新 intent 以查看地震 URI（显式）
+                Intent intent = new Intent(getBaseContext(), WebActivity.class);
+                intent.putExtra(WebIntentContract.S_EARTHQUAKE_URI, earthquakeUri.toString());
+                intent.putExtra(WebIntentContract.S_EARTHQUAKE_PLACE, currentEarthquake.getPlace());
 
                 // 发送 intent 以启动新活动
-                startActivity(websiteIntent);
+                startActivity(intent);
             }
         });
 
