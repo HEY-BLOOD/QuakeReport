@@ -20,20 +20,12 @@ import java.util.List;
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
  */
-public final class QueryUtils {
+public class QueryUtils {
 
     /**
      * Tag for the log messages
      */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
-
-    /**
-     * Create a private constructor because no one should ever create a {@link QueryUtils} object.
-     * This class is only meant to hold static variables and methods, which can be accessed
-     * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
-     */
-    private QueryUtils() {
-    }
 
     /**
      * 从给定字符串 URL 返回新 URL 对象。
@@ -114,7 +106,7 @@ public final class QueryUtils {
     /**
      * 返回通过解析给定 JSON 响应构建的 {@link Earthquake} 对象列表。
      */
-    private static List<Earthquake> extractFeatureFromJson(String earthquakeJSON) {
+    public static List<Earthquake> extractFeatureFromJson(String earthquakeJSON) {
         // 如果 JSON 字符串为空或 null，将提早返回。
         if (TextUtils.isEmpty(earthquakeJSON)) {
             return null;
@@ -179,7 +171,11 @@ public final class QueryUtils {
 
     /**
      * 查询 USGS 数据集并返回 {@link Earthquake} 对象的列表。
+     *
+     * @deprecated 仅仅使用标准的 Java类{@link HttpURLConnection}来发起 HTTP请求，
+     * 和标准的 JSON类{@link JSONObject}来解析 JSON格式的字符串。
      */
+    @Deprecated
     public static List<Earthquake> fetchEarthquakeData(String requestUrl) {
         Log.i(LOG_TAG, "TEST: fetchEarthquakeData() called ...");
 

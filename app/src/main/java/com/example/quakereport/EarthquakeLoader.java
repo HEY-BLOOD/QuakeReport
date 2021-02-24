@@ -54,7 +54,7 @@ public class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>> {
         }
 
         // 执行网络请求、解析响应和提取地震列表。
-        List<Earthquake> earthquakes = QueryUtils.fetchEarthquakeData(url);
+        List<Earthquake> earthquakes = QueryUtilsPlus.fetchEarthquakeData(url);
         return earthquakes;
     }
 }
