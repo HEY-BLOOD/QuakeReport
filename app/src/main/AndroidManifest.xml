@@ -18,7 +18,7 @@
                 android:value=".EarthquakeActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".setting.SettingsActivity"
             android:label="@string/settings_title">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

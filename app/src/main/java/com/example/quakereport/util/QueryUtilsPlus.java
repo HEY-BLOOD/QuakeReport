@@ -1,6 +1,8 @@
-package com.example.quakereport;
+package com.example.quakereport.util;
 
 import android.util.Log;
+
+import com.example.quakereport.Earthquake;
 
 import java.io.IOException;
 import java.util.List;

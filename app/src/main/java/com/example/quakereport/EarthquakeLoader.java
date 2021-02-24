@@ -5,6 +5,8 @@ import android.util.Log;
 
 import androidx.loader.content.AsyncTaskLoader;
 
+import com.example.quakereport.util.QueryUtilsPlus;
+
 import java.util.List;
 
 /**

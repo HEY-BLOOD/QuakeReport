@@ -38,6 +38,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import com.example.quakereport.setting.SettingsActivity;
 import com.example.quakereport.web.WebActivity;
 import com.example.quakereport.web.WebIntentContract;
 

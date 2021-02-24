@@ -1,4 +1,4 @@
-package com.example.quakereport;
+package com.example.quakereport.setting;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.quakereport.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
