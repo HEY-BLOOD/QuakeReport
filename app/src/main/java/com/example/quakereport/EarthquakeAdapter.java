@@ -40,9 +40,9 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         Earthquake currentEarthquake = getItem(position);
 
         // 使用视图 ID magnitude 找到 TextView
-        TextView magnitudeView = (TextView) itemView.findViewById(R.id.mag_text);
+        TextView magnitudeView = itemView.findViewById(R.id.mag_text);
         // 格式化震级使其显示一位小数
-        String formattedMagnitude = formatMagnitude(currentEarthquake.getMagnitude());
+        String formattedMagnitude = formatMagnitude(currentEarthquake.getMag());
         // 在该 TextView 中显示目前地震的震级
         magnitudeView.setText(formattedMagnitude);
 
@@ -50,7 +50,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // 从 TextView 获取背景，该背景是一个 GradientDrawable。
         GradientDrawable magnitudeCircle = (GradientDrawable) magnitudeView.getBackground();
         // 根据当前的地震震级获取相应的背景颜色
-        int magnitudeColor = getMagnitudeColor(currentEarthquake.getMagnitude());
+        int magnitudeColor = getMagnitudeColor(currentEarthquake.getMag());
         // 设置震级圆圈的颜色
         magnitudeCircle.setColor(magnitudeColor);
 
@@ -67,24 +67,24 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             primaryPlace = originalPlace;
         }
         // 找到 place 位置信息 的两个 TextView
-        TextView placeOffsetView = (TextView) itemView.findViewById(R.id.place_offset_text);
-        TextView primaryPlaceView = (TextView) itemView.findViewById(R.id.primary_place_text);
+        TextView placeOffsetView = itemView.findViewById(R.id.place_offset_text);
+        TextView primaryPlaceView = itemView.findViewById(R.id.primary_place_text);
         // 在该 TextView 中显示目前地震的位置
         placeOffsetView.setText(placeOffset);
         primaryPlaceView.setText(primaryPlace);
 
         // 根据地震时间（以毫秒为单位）创建一个新的 Date 对象
-        Date dateObject = new Date(currentEarthquake.getTimeInMilliseconds());
+        Date dateObject = new Date(currentEarthquake.getTime());
 
         // 找到视图 ID 为 date 的 TextView
-        TextView dateView = (TextView) itemView.findViewById(R.id.date_text);
+        TextView dateView = itemView.findViewById(R.id.date_text);
         // 设置日期字符串的格式（即 "Mar 3, 1984"）
         String formattedDate = formatDate(dateObject);
         // 在该 TextView 中显示目前地震的日期
         dateView.setText(formattedDate);
 
         // 找到视图 ID 为 time 的 TextView
-        TextView timeView = (TextView) itemView.findViewById(R.id.time_text);
+        TextView timeView = itemView.findViewById(R.id.time_text);
         // 设置时间字符串的格式（即 "4:30PM"）
         String formattedTime = formatTime(dateObject);
         // 在该 TextView 中显示目前地震的时间
