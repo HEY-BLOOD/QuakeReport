@@ -106,7 +106,7 @@ public class QueryUtils {
     }
 
     /**
-     * 返回通过解析给定 JSON 响应构建的 {@link Earthquake} 对象列表。
+     * 返回通过解析 JSON响应后的 {@link Earthquake} 对象列表。
      */
     public static List<Earthquake> extractFeatureFromJson(String earthquakeJSON) {
         // 如果 JSON 字符串为空或 null，将提早返回。
@@ -131,7 +131,6 @@ public class QueryUtils {
 
             // 针对 earthquakeArray 中的每个地震，创建 {@link Earthquake} 对象
             for (int i = 0; i < earthquakeArray.length(); i++) {
-
                 // 获取地震列表中位置 i 处的单一地震
                 JSONObject currentEarthquake = earthquakeArray.getJSONObject(i);
 
@@ -164,7 +163,7 @@ public class QueryUtils {
             // 在 "try" 块中执行上述任一语句时若系统抛出错误，
             // 则在此处捕获异常，以便应用不会崩溃。在日志消息中打印
             // 来自异常的消息。
-            Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
+            Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
         }
 
         // 返回地震列表
@@ -192,11 +191,8 @@ public class QueryUtils {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
-        // 从 JSON 响应提取相关域并创建 {@link Earthquake} 的列表
-        List<Earthquake> earthquakes = extractFeatureFromJson(jsonResponse);
-
-        // 返回 {@link Earthquake} 的列表
-        return earthquakes;
+        // 从 JSON 响应提取相关域，返回 {@link Earthquake} 的列表
+        return extractFeatureFromJson(jsonResponse);
     }
 
 }
