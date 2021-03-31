@@ -171,9 +171,19 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
                 R.string.settings_order_by_key),
                 getString(R.string.settings_order_by_default));
 
+        // 按照地震发生的最近时间排序偏好
+        String limit = sharedPrefs.getString(getString(
+                R.string.settings_limit_key),
+                getString(R.string.settings_limit_default));
+
+        // 最多显示地震个数偏好
+        String limit = sharedPrefs.getString(getString(
+                R.string.settings_limit_key),
+                getString(R.string.settings_limit_default));
+
         // 构造 USGS 请求地址
         uriBuilder.appendQueryParameter("format", "geojson");
-        uriBuilder.appendQueryParameter("limit", "10");
+        uriBuilder.appendQueryParameter("limit", limit);
         uriBuilder.appendQueryParameter("minmag", minMagnitude);
         uriBuilder.appendQueryParameter("orderby", orderBy);
 

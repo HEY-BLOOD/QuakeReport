@@ -14,7 +14,7 @@
     <!-- Settings Menu Item [CHAR LIMIT=NONE] -->
     <string name="settings_menu_item">Settings</string>
     <!-- Settings Activity Title [CHAR LIMIT=NONE] -->
-    <string name="settings_title">Earthquake Settings</string>
+    <string name="settings_title">Settings</string>
 
     <!-- Strings For Minimum Magnitude Preference [CHAR LIMIT=30] -->
     <string name="settings_min_magnitude_label">Minimum Magnitude</string>
@@ -33,4 +33,6 @@
     <!-- Label for order-by most recent option [CHAR LIMIT=20] -->
     <string name="settings_order_by_most_recent_label">Most Recent</string>
     <string name="settings_order_by_most_recent_value" translatable="false">time</string>
+    <string name="settings_limit_key">Limit</string>
+    <string name="settings_limit_default">15</string>
 </resources>

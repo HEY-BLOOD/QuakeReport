@@ -32,6 +32,10 @@ public class SettingsActivity extends AppCompatActivity {
             // 显示地震列表的排序偏好
             Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
             bindPreferenceSummaryToValue(orderBy);
+
+            // 列表中显示的地震个数偏好
+            Preference limit = findPreference(getString(R.string.settings_limit_key));
+            bindPreferenceSummaryToValue(limit);
         }
 
         private void bindPreferenceSummaryToValue(Preference preference) {
